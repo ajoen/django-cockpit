@@ -1,7 +1,7 @@
 {% if latest_pages %}
     <ul>
     {% for page in latest_pages %}
-        <li><a href="/cockpit/{{ page.id }}/">{{ page.header }}</a></li>
+        <li><a href="{% url 'cockpit:detail' page.id %}">{{ page.header }}</a></li>
     {% endfor %}
     </ul>
 {% else %}
