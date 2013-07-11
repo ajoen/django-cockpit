@@ -9,6 +9,7 @@ urlpatterns = patterns('',
     # url(r'^$', 'django_cockpit.views.home', name='home'),
     # url(r'^django_cockpit/', include('django_cockpit.foo.urls')),
 
+    url(r'^cockpit/', include('cockpit.urls')),
     # Uncomment the admin/doc line below to enable admin documentation:
     url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
 
