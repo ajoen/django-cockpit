@@ -7,6 +7,7 @@ class Page(MPTTModel):
     header = models.CharField(max_length=200, unique=True)
     content = RichTextField()
     parent = TreeForeignKey('self', null=True, blank=True, related_name='children')
+    created_at = models.DateTimeField('created at', auto_now_add=True)
 
     class MPTTMeta:
         order_insertion_by = ['header']
