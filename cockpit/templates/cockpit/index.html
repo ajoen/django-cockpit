@@ -1,8 +1,14 @@
-{% if latest_pages %}
+{% load mptt_tags %}
+{% if pages %}
     <ul>
-    {% for page in latest_pages %}
-        <li><a href="{% url 'cockpit:detail' page.id %}">{{ page.header }}</a></li>
-    {% endfor %}
+    {% recursetree pages %}
+        <li><a href="{% url 'cockpit:detail' node.id %}">{{ node.header }}</a></li>
+        {% if not node.is_leaf_node %}
+            <ul class="children">
+                {{ children }}
+            </ul>
+        {% endif %}
+    {% endrecursetree %}
     </ul>
 {% else %}
     <p>No pages are available.</p>

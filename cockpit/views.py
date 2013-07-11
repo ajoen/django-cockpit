@@ -3,8 +3,8 @@ from cockpit.models import Page
 
 
 def index(request):
-    latest_pages = Page.objects.order_by('id')[:10]
-    context = {'latest_pages': latest_pages}
+    pages = Page.objects.all()
+    context = {'pages': pages}
     return render(request, 'cockpit/index.html', context)
 
 
