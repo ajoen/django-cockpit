@@ -1,8 +1,10 @@
+{% load i18n %}
 {% load mptt_tags %}
+
 {% if pages %}
     <ul>
     {% recursetree pages %}
-        <li><a href="{% url 'cockpit:detail' node.id %}">{{ node.header }}</a></li>
+        <li><a href="{% url 'cockpit:detail' slug=node.slug %}">{{ node.heading }}</a></li>
         {% if not node.is_leaf_node %}
             <ul class="children">
                 {{ children }}

@@ -1,4 +1,5 @@
-from django.shortcuts import render, get_object_or_404
+from django.http import Http404
+from django.shortcuts import render
 from cockpit.models import Page
 
 
@@ -8,6 +9,9 @@ def index(request):
     return render(request, 'cockpit/index.html', context)
 
 
-def detail(request, page_id):
-    page = get_object_or_404(Page, pk=page_id)
+def detail(request, slug):
+    try:
+        page = Page.objects.language().get(slug=slug)
+    except Page.DoesNotExist:
+        raise Http404
     return render(request, 'cockpit/page.html', {'page': page})
