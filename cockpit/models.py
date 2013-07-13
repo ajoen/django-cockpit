@@ -6,12 +6,14 @@ from ckeditor.fields import RichTextField
 from noconflict import classmaker
 
 
-class Page(MPTTModel, TranslatableModel):
+class Page(TranslatableModel, MPTTModel):
     """
     Pages with hierarchical structure.
     """
 
     # Prevent metaclass conflict
+    # https://github.com/ojii/django-nani/issues/39
+    # http://code.activestate.com/recipes/204197-solving-the-metaclass-conflict/
     __metaclass__=classmaker()
 
     translations = TranslatedFields(
@@ -24,7 +26,7 @@ class Page(MPTTModel, TranslatableModel):
     created_at = models.DateTimeField(_('created at'), auto_now_add=True)
 
     class MPTTMeta:
-        order_insertion_by = ['header']
+        order_insertion_by = ['heading']
 
     def __unicode__(self):  # Python 3: def __str__(self):
-        return self.header
+        return self.heading
