@@ -12,6 +12,7 @@ def find_roots(nodes):
             roots.append(qry)
     return roots
 
+
 def find_children(node, nodes):
     children = []
     for qry in nodes:
@@ -46,6 +47,21 @@ class CockpitPageTreeNode(template.Node):
 
 @register.tag
 def cockpit_page_tree(parser, token):
+    """
+    Iterates over the nodes in the tree, and renders the contained block for each node.
+    This tag will recursively render children into the template variable {{ children }}.
+
+    Example Usage:
+            <ul>
+            {% cockpit_page_tree pages %}
+                <li><a href="{% url 'cockpit:detail' slug=node.slug %}">{{ node.heading }}</a>
+                    <ul class="children">
+                        {{ children }}
+                    </ul>
+                </li>
+            {% end_cockpit_page_tree %}
+            </ul>
+    """
     bits = token.contents.split()
     if len(bits) != 2:
         raise template.TemplateSyntaxError(_('%s tag requires a queryset') % bits[0])
