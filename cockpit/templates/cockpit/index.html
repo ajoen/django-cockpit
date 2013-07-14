@@ -1,16 +1,16 @@
 {% load i18n %}
-{% load mptt_tags %}
+{% load cockpit_tags %}
 
 {% if pages %}
     <ul>
-    {% recursetree pages %}
+    {% cockpit_page_tree pages %}
         <li><a href="{% url 'cockpit:detail' slug=node.slug %}">{{ node.heading }}</a></li>
         {% if not node.is_leaf_node %}
             <ul class="children">
                 {{ children }}
             </ul>
         {% endif %}
-    {% endrecursetree %}
+    {% end_cockpit_page_tree %}
     </ul>
 {% else %}
     <p>No pages are available.</p>
