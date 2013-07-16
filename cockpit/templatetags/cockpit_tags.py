@@ -9,6 +9,12 @@ register = template.Library()
 
 
 def find_roots(nodes, searchOnlyParentless=True):
+    """
+    Find the root Pages in the "nodes" list.
+    :param nodes: List of Pages
+    :param searchOnlyParentless: If false, accepts Pages with absent parents as roots
+    :return:
+    """
     roots = []
     for qry in nodes:
         if qry.parent_id is None:
@@ -92,6 +98,16 @@ class CockpitPageResultList(ResultList):
 
 
 def append_children_page_list(unordered_list, ordered_list, item, hierarchy_levels, order):
+    """
+    Recursively creates the ordered page list. Groups relevant pages in the hierarchy
+    together. Fills "ordered_list" and "hierarchy_levels" lists.
+    :param unordered_list: Unordered Page list
+    :param ordered_list: Ordered Page list (fills this)
+    :param item: Give all root Pages in order to traverse all tree
+    :param hierarchy_levels: Depth of all pages (fills this)
+    :param order: Hierarchy level of the current item
+    :return:
+    """
     ordered_list.append(item)
     hierarchy_levels.append(order)
     #unordered_list.remove(item)
@@ -102,6 +118,11 @@ def append_children_page_list(unordered_list, ordered_list, item, hierarchy_leve
 
 
 def create_ordered_page_list(unordered_list):
+    """
+    Takes the unordered list and orders it according to the page hierarchy.
+    "hierarchy_levels" shows the depth of the pages in the hierarchy tree.
+    :param unordered_list: unordered Page list
+    """
     roots = find_roots(unordered_list, searchOnlyParentless=False)
     ordered_list = []
     hierarchy_levels = []
@@ -114,6 +135,8 @@ def create_ordered_page_list(unordered_list):
 def cockpit_page_result_list(cl):
     """
     Displays the headers and data list together
+    Replaces admin template tag "result_list". Constructs page list according to the
+    hierarchical structure.
     """
     headers = list(result_headers(cl))
     num_sorted_fields = 0
@@ -126,6 +149,8 @@ def cockpit_page_result_list(cl):
     cl.result_list = ordered_results['ordered_list']
     hierarchy_levels = ordered_results['hierarchy_levels']
     list_results = list(results(cl))
+
+    # Hierarchical indentation
     i = 0
     for result in list_results:
         result[1] = remove_tags(result[1], "th")
