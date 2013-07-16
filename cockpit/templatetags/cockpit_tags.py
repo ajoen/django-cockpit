@@ -6,11 +6,19 @@ from django.contrib.admin.templatetags.admin_list import ResultList, result_head
 register = template.Library()
 
 
-def find_roots(nodes):
+def find_roots(nodes, searchOnlyParentless=True):
     roots = []
     for qry in nodes:
         if qry.parent_id is None:
             roots.append(qry)
+        elif searchOnlyParentless is not True:
+            hasParent = False
+            for qryin in nodes:
+                if qryin.id == qry.parent_id:
+                    hasParent = True
+                    break
+            if not hasParent:
+                roots.append(qry)
     return roots
 
 
@@ -93,7 +101,7 @@ def append_children_page_list(unordered_list, ordered_list, item, order):
 
 
 def create_ordered_page_list(unordered_list):
-    roots = find_roots(unordered_list)
+    roots = find_roots(unordered_list, searchOnlyParentless=False)
     ordered_list = []
     for root in roots:
         append_children_page_list(unordered_list, ordered_list, root, 0)
