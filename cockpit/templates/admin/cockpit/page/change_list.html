@@ -28,14 +28,33 @@
 (function($) {
     $(document).ready(function($) {
         $("tr input.action-select").actions();
+
+        var c = {};
         $(".row1").draggable({
-            helper: "clone"
+            helper: "clone",
+            start: function(event, ui) {
+                c.tr = this;
+                c.helper = ui.helper;
+            }
         });
-        $(".row1 th").droppable();
+        $(".row1 th").droppable({
+            drop: function(event, ui) {
+                $(this).parent('tr').after(c.tr);
+            }
+        });
         $(".row2").draggable({
-            helper: "clone"
+            helper: "clone",
+            start: function(event, ui) {
+                c.tr = this;
+                c.helper = ui.helper;
+            }
         });
-        $(".row2 th").droppable();
+        $(".row2 th").droppable({
+            drop: function(event, ui) {
+                $(this).parent('tr').after(c.tr);
+            }
+        });
+
     });
 })(django.jQuery);
 </script>
