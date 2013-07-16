@@ -20,10 +20,5 @@ class PageAdmin(TranslatableAdmin):
     search_fields = ['translations__heading']
     date_hierarchy = 'created_at'
 
-    def changelist_view(self, request, extra_context=None):
-
-        return super(PageAdmin, self).changelist_view(request, extra_context)
-
-
 
 admin.site.register(Page, PageAdmin)

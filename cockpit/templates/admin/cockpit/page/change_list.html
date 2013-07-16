@@ -43,10 +43,12 @@
         });
         rows_th.droppable({
             drop: function(event, ui) {
+                var hierarchy_level = $(this).find("a").css("padding-left").replace("px", "") / 20;
+                $(c.tr).find("a").css("padding-left", (hierarchy_level + 1) * 20 + "px");
                 $(this).parent('tr').after(c.tr);
             }
         });
-
+        /*
         var rowbefore;
         rows.each(function(index) {
             var rows_a = $(this).find("a");
@@ -61,7 +63,6 @@
             rowbefore = $(this);
         });
 
-        /*
         var rowbefore;
         rows.each(function(index) {
             var rows_a = $(this).find("a");

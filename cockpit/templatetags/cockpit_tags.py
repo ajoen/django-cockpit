@@ -1,7 +1,9 @@
 from django import template
 from django.utils.safestring import mark_safe
 from django.utils.translation import ugettext_lazy as _
-from django.contrib.admin.templatetags.admin_list import ResultList, result_headers, results, result_hidden_fields
+from django.contrib.admin.templatetags.admin_list import ResultList, results, lookup_field, result_headers, result_hidden_fields
+from django.utils.html import remove_tags
+
 
 register = template.Library()
 
@@ -89,23 +91,24 @@ class CockpitPageResultList(ResultList):
         super(ResultList, self).__init__(*items)
 
 
-def append_children_page_list(unordered_list, ordered_list, item, order):
-    for i in range(0, order):
-        item.heading = '-' + item.heading
+def append_children_page_list(unordered_list, ordered_list, item, hierarchy_levels, order):
     ordered_list.append(item)
+    hierarchy_levels.append(order)
     #unordered_list.remove(item)
 
     for child in find_children(item, unordered_list):
-        order_in_child = order + 1;
-        append_children_page_list(unordered_list, ordered_list, child, order_in_child)
+        order_in_child = order + 1
+        append_children_page_list(unordered_list, ordered_list, child, hierarchy_levels, order_in_child)
 
 
 def create_ordered_page_list(unordered_list):
     roots = find_roots(unordered_list, searchOnlyParentless=False)
     ordered_list = []
+    hierarchy_levels = []
     for root in roots:
-        append_children_page_list(unordered_list, ordered_list, root, 0)
-    return ordered_list
+        append_children_page_list(unordered_list, ordered_list, root, hierarchy_levels, 0)
+    return {'ordered_list': ordered_list,
+            'hierarchy_levels': hierarchy_levels}
 
 @register.inclusion_tag("admin/change_list_results.html")
 def cockpit_page_result_list(cl):
@@ -120,9 +123,16 @@ def cockpit_page_result_list(cl):
 
     page_results = cl.result_list
     ordered_results = create_ordered_page_list(page_results)
-    cl.result_list = ordered_results
+    cl.result_list = ordered_results['ordered_list']
+    hierarchy_levels = ordered_results['hierarchy_levels']
+    list_results = list(results(cl))
+    i = 0
+    for result in list_results:
+        result[1] = remove_tags(result[1], "th")
+        result[1] = mark_safe(u"<th style='padding-left: %dpx;'>%s</th>" % (5 + hierarchy_levels[i] * 20, result[1]))
+        i += 1
     return {'cl': cl,
             'result_hidden_fields': list(result_hidden_fields(cl)),
             'result_headers': headers,
             'num_sorted_fields': num_sorted_fields,
-            'results': list(results(cl))}
+            'results': list_results}
