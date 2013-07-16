@@ -28,6 +28,14 @@
 (function($) {
     $(document).ready(function($) {
         $("tr input.action-select").actions();
+        $(".row1").draggable({
+            helper: "clone"
+        });
+        $(".row1 th").droppable();
+        $(".row2").draggable({
+            helper: "clone"
+        });
+        $(".row2 th").droppable();
     });
 })(django.jQuery);
 </script>
