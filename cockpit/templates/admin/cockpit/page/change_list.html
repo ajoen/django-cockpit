@@ -29,32 +29,49 @@
     $(document).ready(function($) {
         $("tr input.action-select").actions();
 
+
+
         var c = {};
-        $(".row1").draggable({
+        var rows = $(".row1, .row2");
+        var rows_th = rows.find("th");
+        rows.draggable({
             helper: "clone",
             start: function(event, ui) {
                 c.tr = this;
                 c.helper = ui.helper;
             }
         });
-        $(".row1 th").droppable({
-            drop: function(event, ui) {
-                $(this).parent('tr').after(c.tr);
-            }
-        });
-        $(".row2").draggable({
-            helper: "clone",
-            start: function(event, ui) {
-                c.tr = this;
-                c.helper = ui.helper;
-            }
-        });
-        $(".row2 th").droppable({
+        rows_th.droppable({
             drop: function(event, ui) {
                 $(this).parent('tr').after(c.tr);
             }
         });
 
+        var rowbefore;
+        rows.each(function(index) {
+            var rows_a = $(this).find("a");
+            var countdashes = 0;
+            for(var i = 0 ; i < rows_a.text().length; i++) {
+                if (rows_a.text().charAt(i) == '-') {
+                    countdashes++;
+                }
+            }
+            rows_a.text(rows_a.text().substr(countdashes, rows_a.text().length));
+            rows_a.css("padding-left", countdashes * 20 + "px");
+            rowbefore = $(this);
+        });
+
+        /*
+        var rowbefore;
+        rows.each(function(index) {
+            var rows_a = $(this).find("a");
+            if (rows_a.text().charAt(0) == '-') {
+                rowbefore.append($(this));
+
+            }
+            rowbefore = $(this);
+        });
+        */
     });
 })(django.jQuery);
 </script>
