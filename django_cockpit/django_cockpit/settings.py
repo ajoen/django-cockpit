@@ -1,4 +1,7 @@
+import os
 # Django settings for django_cockpit project.
+
+PROJECT_PATH = os.path.abspath(os.path.dirname(__file__))
 
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
@@ -61,7 +64,7 @@ MEDIA_URL = ''
 # Don't put anything in this directory yourself; store your static files
 # in apps' "static/" subdirectories and in STATICFILES_DIRS.
 # Example: "/var/www/example.com/static/"
-STATIC_ROOT = '/home/berker/projects/django-cockpit/django_cockpit/django_cockpit/static'
+STATIC_ROOT = PROJECT_PATH + '/static'
 
 # URL prefix for static files.
 # Example: "http://example.com/static/", "http://static.example.com/"
@@ -124,7 +127,7 @@ INSTALLED_APPS = (
     'cockpit',
 )
 
-CKEDITOR_UPLOAD_PATH = "/home/berker/projects/django-cockpit/django_cockpit/django_cockpit/upload"
+CKEDITOR_UPLOAD_PATH = PROJECT_PATH + "/upload"
 
 # A sample logging configuration. The only tangible logging
 # performed by this configuration is to send an email to
