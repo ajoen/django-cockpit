@@ -1,0 +1,8 @@
+.ul_collapse img {
+    width: 12px;
+    height: 12px;
+}
+
+.no_bullet {
+    list-style-type: none;
+}
