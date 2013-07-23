@@ -117,13 +117,13 @@ def append_children_page_list(unordered_list, ordered_list, item, hierarchy_leve
         append_children_page_list(unordered_list, ordered_list, child, hierarchy_levels, order_in_child)
 
 
-def create_ordered_page_list(unordered_list):
+def create_ordered_page_list(unordered_list, searchOnlyParentless=False):
     """
     Takes the unordered list and orders it according to the page hierarchy.
     "hierarchy_levels" shows the depth of the pages in the hierarchy tree.
     :param unordered_list: unordered Page list
     """
-    roots = find_roots(unordered_list, searchOnlyParentless=False)
+    roots = find_roots(unordered_list, searchOnlyParentless=searchOnlyParentless)
     ordered_list = []
     hierarchy_levels = []
     for root in roots:

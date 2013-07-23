@@ -1,6 +1,7 @@
 from django.contrib import admin
 from hvad.admin import TranslatableAdmin
 from cockpit.models import Page
+from cockpit.widgets import CockpitPageSelectWidget
 from django.conf.urls import patterns, url
 from django.http import HttpResponseRedirect
 
@@ -21,6 +22,11 @@ class PageAdmin(TranslatableAdmin):
     list_filter = ['created_at']
     search_fields = ['translations__heading']
     date_hierarchy = 'created_at'
+
+    def formfield_for_dbfield(self, db_field, **kwargs):
+        if db_field.name == 'parent':
+            kwargs['widget'] = CockpitPageSelectWidget
+        return super(PageAdmin, self).formfield_for_dbfield(db_field, **kwargs)
 
     def get_urls(self):
         """
