@@ -3,6 +3,10 @@
     height: 12px;
 }
 
+li {
+    list-style-position: inside;
+}
+
 .no_bullet {
     list-style-type: none;
 }
