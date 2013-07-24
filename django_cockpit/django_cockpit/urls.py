@@ -2,6 +2,9 @@ from django.conf.urls import patterns, include, url
 
 # Uncomment the next two lines to enable the admin:
 from django.contrib import admin
+import autocomplete_light
+
+autocomplete_light.autodiscover()
 admin.autodiscover()
 
 urlpatterns = patterns('',
@@ -16,4 +19,5 @@ urlpatterns = patterns('',
     # Uncomment the next line to enable the admin:
     url(r'^admin/', include(admin.site.urls)),
     url(r'^ckeditor/', include('ckeditor.urls')),
+    url(r'^autocomplete/', include('autocomplete_light.urls')),
 )

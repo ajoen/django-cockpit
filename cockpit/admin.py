@@ -4,6 +4,8 @@ from cockpit.models import Page
 from cockpit.widgets import CockpitPageSelectWidget
 from django.conf.urls import patterns, url
 from django.http import HttpResponseRedirect
+import autocomplete_light
+from cockpit.settings import ADMIN_PAGE_SELECTION
 
 
 class PageAdmin(TranslatableAdmin):
@@ -16,16 +18,26 @@ class PageAdmin(TranslatableAdmin):
     #
     def __init__(self, *args, **kwargs):
         super(PageAdmin, self).__init__(*args, **kwargs)
-        self.prepopulated_fields = {'slug': ('heading',)}
+        #self.prepopulated_fields = {'slug': ('heading',)}
 
     list_display = ('__str__', 'all_translations', 'created_at', 'parent')
     list_filter = ['created_at']
     search_fields = ['translations__heading']
     date_hierarchy = 'created_at'
+    #form = autocomplete_light.modelform_factory(Page)
+
+
+    # def formfield_for_dbfield(self, db_field, **kwargs):
+    #     if db_field.name == 'parent':
+    #         kwargs['widget'] = CockpitPageSelectWidget
+    #     return super(PageAdmin, self).formfield_for_dbfield(db_field, **kwargs)
 
     def formfield_for_dbfield(self, db_field, **kwargs):
         if db_field.name == 'parent':
-            kwargs['widget'] = CockpitPageSelectWidget
+            if ADMIN_PAGE_SELECTION == 'selectbox':
+                kwargs['widget'] = CockpitPageSelectWidget
+            else:
+                kwargs['widget'] = autocomplete_light.ChoiceWidget('PageAutocompleteModelBase')
         return super(PageAdmin, self).formfield_for_dbfield(db_field, **kwargs)
 
     def get_urls(self):

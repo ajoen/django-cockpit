@@ -120,11 +120,12 @@ INSTALLED_APPS = (
     'django.contrib.sites',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'cockpit',
     'django.contrib.admin',
     'south',
+    'autocomplete_light',
     'ckeditor',
     'hvad',
-    'cockpit',
 )
 
 CKEDITOR_UPLOAD_PATH = PROJECT_PATH + "/upload"
@@ -157,3 +158,6 @@ LOGGING = {
         },
     }
 }
+
+# Set to 'selectbox' or 'autocomplete'
+COCKPIT_ADMIN_PAGE_SELECTION = 'autocomplete'
