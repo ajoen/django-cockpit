@@ -35,7 +35,7 @@ class PageAdmin(TranslatableAdmin):
             if ADMIN_PAGE_SELECTION == 'selectbox':
                 kwargs['widget'] = CockpitPageSelectWidget
             else:
-                kwargs['widget'] = autocomplete_light.ChoiceWidget('PageAutocompleteModelBase')
+                kwargs['widget'] = autocomplete_light.ChoiceWidget('PageAutocomplete')
         return super(PageAdmin, self).formfield_for_dbfield(db_field, **kwargs)
 
     def get_urls(self):
