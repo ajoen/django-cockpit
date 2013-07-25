@@ -1,7 +1,6 @@
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 from hvad.models import TranslatableModel, TranslatedFields
-from ckeditor.fields import RichTextField
 
 
 class Page(TranslatableModel):
@@ -13,7 +12,7 @@ class Page(TranslatableModel):
 
     translations = TranslatedFields(
         heading=models.CharField(_('heading'), max_length=200, unique=True),
-        content=RichTextField(_('content')),
+        content=models.TextField(_('content')),
         slug=models.SlugField(_('slug'), unique=True)
     )
 

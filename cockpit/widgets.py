@@ -4,6 +4,36 @@ from django.forms import widgets
 from django.utils.html import format_html, mark_safe
 from django.utils.encoding import force_text
 from cockpit.templatetags.cockpit_tags import create_ordered_page_list
+from ckeditor.widgets import CKEditorWidget
+from django.core.exceptions import ImproperlyConfigured
+
+
+class CKEditorWidgetCockpit(CKEditorWidget):
+    """
+    CKEditorWidget is overrided to prevent ckeditor from loading a jquery version.
+    When it loads a jquery version, it breaks django-autocomplete-light app.
+    Here, 'cockpit/ckeditor/ckeditor.js' is loaded which is included with the
+    cockpit app.
+
+    Only
+    "CKEDITOR.scriptLoader.load("https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js");"
+    part is removed in the provided 'ckeditor.js'.
+    """
+    class Media:
+        try:
+            js = (
+                'cockpit/ckeditor/ckeditor.js',
+            )
+        except AttributeError:
+            raise ImproperlyConfigured("django-ckeditor requires \
+                    CKEDITOR_MEDIA_PREFIX setting. This setting specifies a \
+                    URL prefix to the ckeditor JS and CSS media (not \
+                    uploaded media). Make sure to use a trailing slash: \
+                    CKEDITOR_MEDIA_PREFIX = '/media/ckeditor/'")
+
+    def __init__(self, config_name='default', *args, **kwargs):
+        super(CKEditorWidgetCockpit, self).__init__(*args, **kwargs)
+        CKEditorWidget.Media = self.Media
 
 
 class CockpitPageSelectWidget(widgets.Select):
