@@ -85,7 +85,7 @@ def cockpit_page_tree(parser, token):
 
     queryset_var = template.Variable(bits[1])
 
-    template_nodes = parser.parse(('end_cockpit_page_tree',))
+    template_nodes = parser.parse(('endcockpit_page_tree',))
     parser.delete_first_token()
 
     return CockpitPageTreeNode(template_nodes, queryset_var)
