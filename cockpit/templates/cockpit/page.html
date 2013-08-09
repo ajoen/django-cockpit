@@ -1,0 +1,11 @@
+{% load i18n %}
+
+<h1>
+    {{ page.heading }}
+</h1>
+<div>
+    {{ page.content|safe|linebreaks }}
+</div>
+<div>
+    <small>Created At: {{ page.created_at|date:"d/m/Y H:i" }}</small>
+</div>

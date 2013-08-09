@@ -1,0 +1,9 @@
+Django==1.5.1
+Pillow==2.1.0
+South==0.8.1
+argparse==1.2.1
+distribute==0.6.24
+django-autocomplete-light==1.2.2
+django-ckeditor==4.0.2
+django-hvad==0.3
+wsgiref==0.1.2

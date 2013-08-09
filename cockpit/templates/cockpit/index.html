@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+{% load i18n %}
+{% load cockpit_tags %}
+{% load staticfiles %}
+
+{% block extrahead %}
+<script type="text/javascript">
+$(document).ready(function() {
+    var ul_collapse = $('.ul_collapse');
+    ul_collapse.click(function() {
+        $(this).siblings('.children').slideToggle();
+        if ($(this).hasClass("plus")) {
+            $(this).removeClass("plus").addClass("minus");
+            $(this).html('<img src="{% static "cockpit/img/minus.png" %}">');
+        } else {
+            $(this).removeClass("minus").addClass("plus");
+            $(this).html('<img src="{% static "cockpit/img/plus.png" %}">');
+        }
+    });
+
+    ul_collapse.each(function(i) {
+        if (!$(this).siblings('.children').find('li').length) {
+            $(this).parent().removeClass("no_bullet");
+            $(this).remove();
+        }
+    });
+});
+</script>
+{% endblock %}
+
+{% block content %}
+    {% if pages %}
+        <ul>
+        {% cockpit_page_tree pages %}
+            <li class="no_bullet"><a href="#" class="ul_collapse minus"><img src="{% static "cockpit/img/minus.png" %}"></a>
+                <a href="{% url 'cockpit:detail' slug=node.slug %}">{{ node.heading }}</a>
+                <ul class="children">
+                    {{ children }}
+                </ul>
+            </li>
+        {% endcockpit_page_tree %}
+        </ul>
+    {% else %}
+        <p>No pages are available.</p>
+    {% endif %}
+{% endblock %}
